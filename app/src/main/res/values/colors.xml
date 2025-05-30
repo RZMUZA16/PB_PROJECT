@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Warna Dasar -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray">#FF808080</color>
+    <color name="dark_gray">#FF404040</color>
+    <color name="light_gray">#FFD3D3D3</color>
+
+    <!-- Warna Merah -->
+    <color name="red">#FFFF0000</color>
+    <color name="dark_red">#FF8B0000</color>
+    <color name="light_red">#FFFFA07A</color>
+    <color name="maroon">#FF800000</color>
+    <color name="crimson">#FFDC143C</color>
+    <color name="amarath">#FFAB274F</color>
+    <color name="fire_red">#FFB22222</color>
+    <color name="salmon">#FFFA8072</color>
+    <color name="coral">#FFFF7F50</color>
+    <color name="rose_red">#FFC21E56</color>
+
+    <!-- Warna Pink -->
+    <color name="pink">#FFFFC0CB</color>
+    <color name="light_pink">#FFFFB6C1</color>
+    <color name="hot_pink">#FFFF69B4</color>
+    <color name="deep_pink">#FFFF1493</color>
+    <color name="pale_pink">#FFFADADD</color>
+    <color name="oink">#FFFF7F7F</color>
+    <color name="bubblegum_pink">#FFFF6FFF</color>
+
+    <!-- Warna Biru -->
+    <color name="blue">#FF0000FF</color>
+    <color name="light_blue">#FFADD8E6</color>
+    <color name="sky_blue">#FF87CEEB</color>
+    <color name="deep_sky_blue">#FF00BFFF</color>
+    <color name="dodger_blue">#FF1E90FF</color>
+    <color name="steel_blue">#FF4682B4</color>
+    <color name="royal_blue">#FF4169E1</color>
+    <color name="midnight_blue">#FF191970</color>
+    <color name="navy_blue">#FF000080</color>
+
+        <!-- Warna Hijau -->
+    <color name="green">#FF008000</color>
+    <color name="lime">#FF00FF00</color>
+    <color name="dark_green">#2E7D32</color>
+    <color name="light_green">#FF90EE90</color>
+    <color name="forest_green">#FF228B22</color>
+    <color name="mint">#FF98FF98</color>
+    <color name="jade">#FF00A86B</color>
+    <color name="emerald">#FF50C878</color>
+    <color name="sea_green">#FF2E8B57</color>
+    <color name="olive">#FF808000</color>
+
+    <!-- Warna Kuning -->
+    <color name="yellow">#FFFFFF00</color>
+    <color name="light_yellow">#FFFFFFE0</color>
+    <color name="gold">#FFFFD700</color>
+    <color name="lemon">#FFFFFACD</color>
+    <color name="amber">#FFFFBF00</color>
+    <color name="mustard">#FFFFDB58</color>
+    <color name="saffron">#FFF4C430</color>
+
+    <!-- Warna Oranye -->
+    <color name="orange">#FFFFA500</color>
+    <color name="dark_orange">#FFFF8C00</color>
+    <color name="light_orange">#FFFFEFD5</color>
+    <color name="peach">#FFFFDAB9</color>
+    <color name="burnt_orange">#FFCC5500</color>
+    <color name="apricot">#FFFBCEB1</color>
+
+    <!-- Warna Ungu / Violet -->
+    <color name="purple">#FF800080</color>
+    <color name="violet">#FF8A2BE2</color>
+    <color name="indigo">#FF4B0082</color>
+    <color name="lavender">#FFE6E6FA</color>
+    <color name="plum">#FFDDA0DD</color>
+    <color name="orchid">#FFDA70D6</color>
+    <color name="magenta">#FFFF00FF</color>
+    <color name="mauve">#FFE0B0FF</color>
+
+    <!-- Warna Coklat -->
+    <color name="brown">#FFA52A2A</color>
+    <color name="saddle_brown">#FF8B4513</color>
+    <color name="chocolate">#FFD2691E</color>
+    <color name="tan">#FFD2B48C</color>
+    <color name="beige">#FFF5F5DC</color>
+    <color name="coffee">#FF6F4E37</color>
+    <color name="caramel">#FFAF6E4D</color>
+    <color name="mocha">#FF3B2F2F</color>
+
+    <!-- Warna Netral Tambahan -->
+    <color name="silver">#FFC0C0C0</color>
+    <color name="light_silver">#FFECECEC</color>
+    <color name="ash">#FFB2BEB5</color>
+    <color name="charcoal">#FF36454F</color>
+    <color name="slate">#FF708090</color>
+
+    <!-- Warna Alami / Lain -->
+    <color name="aqua">#FF00FFFF</color>
+    <color name="teal">#FF008080</color>
+    <color name="turquoise">#FF40E0D0</color>
+    <color name="cyan">#FF00FFFF</color>
+    <color name="azure">#FFF0FFFF</color>
+    <color name="snow">#FFFFFAFA</color>
+    <color name="ivory">#FFFFFFF0</color>
+    <color name="linen">#FFFAF0E6</color>
+    <color name="mint_cream">#FFF5FFFA</color>
+    <color name="honeydew">#FFF0FFF0</color>
+
+    <!-- Warna Kustom -->
+    <color name="primary_dark">#FF121212</color>
+    <color name="primary_light">#FFF5F5F5</color>
+    <color name="accent_color">#FF03DAC5</color>
+    <color name="warning_red">#FFD32F2F</color>
+    <color name="success_green">#FF388E3C</color>
+    <color name="info_blue">#FF1976D2</color>
+    <color name="soft_purple">#FFB39DDB</color>
+    <color name="dream_blue">#FF81D4FA</color>
+    <color name="sunset_orange">#FFFF7043</color>
+    <color name="morning_yellow">#FFFFF59D</color>
+    <color name="ungu">#6200EE</color>
+    <color name="toska">#FFFFF59D</color>
+
+</resources>
