@@ -1,4 +1,6 @@
 package com.example.dailyreminder.data.api
 
-class AuthApiService {
+interface AuthApiService {
+    @POST("login")
+    suspend fun login(@Body body: Map<String, String>): Response<LoginResponse>
 }
