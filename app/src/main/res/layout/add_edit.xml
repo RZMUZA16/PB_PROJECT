@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/jade">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/jade"
+            app:titleTextColor="@color/white"
+            app:navigationIcon="@drawable/back_button"
+            app:tint="@color/white"
+            app:title="Add/Edit Reminder" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:background="@drawable/rounded_button"
+                android:elevation="4dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etReminderTitle"
+                        android:hint="Reminder Title"
+                        android:inputType="textCapSentences"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etReminderDescription"
+                        android:hint="Description (Optional)"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:gravity="top"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="16dp" />
+                <Button
+                    android:id="@+id/btnSelectDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Select Date"
+
+                    android:textColor="@color/white"
+                    android:paddingVertical="12dp"
+                    android:textSize="16sp"
+                    android:layout_marginTop="8dp" />
+                <TextView
+                    android:id="@+id/tvSelectedDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No date selected"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="16dp" />
+                <Button
+                    android:id="@+id/btnSelectTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Select Time"
+                    android:textColor="@color/white"
+                    android:paddingVertical="12dp"
+                    android:textSize="16sp"
+                    android:layout_marginTop="8dp" />
+                <TextView
+                    android:id="@+id/tvSelectedTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No time selected"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="4dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="16dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mark as Completed"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gray" />
+                    <Switch
+                        android:id="@+id/switchCompleted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:thumbTint="@color/jade"
+                        android:trackTint="@color/jade" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="24dp"
+                    android:gravity="end">
+
+                    <Button
+                        android:id="@+id/btnCancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/rounded_button"
+                        android:elevation="0dp"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="12dp"
+                        android:stateListAnimator="@null"
+                        android:text="Cancel"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnSaveReminder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save Reminder"
+                        android:textColor="@color/white"
+                        android:background="@drawable/rounded_button"
+                        android:paddingVertical="12dp"
+                        android:paddingHorizontal="24dp"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
