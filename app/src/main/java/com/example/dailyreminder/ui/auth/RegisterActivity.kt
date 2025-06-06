@@ -28,7 +28,6 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        // Inisialisasi view
         etName = findViewById(R.id.etName)
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
@@ -75,13 +74,12 @@ class RegisterActivity : AppCompatActivity() {
             email = email,
             password = password,
             phone = phone,
-            gender = gender,
             birthDate = selectedDate
         )
 
         lifecycleScope.launch {
             try {
-                val repository = AuthRepository() // Pastikan ini sudah diatur dependency-nya
+                val repository = AuthRepository()
                 val response = repository.register(userDto)
                 if (response.isSuccessful) {
                     Toast.makeText(this@RegisterActivity, "Register berhasil", Toast.LENGTH_SHORT).show()

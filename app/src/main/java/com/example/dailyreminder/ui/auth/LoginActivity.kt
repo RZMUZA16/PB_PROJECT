@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val token = response.body()?.token // tergantung struktur API kamu
                     if (token != null) {
-                        sessionManager.saveAluthToken(token)
+                        sessionManager.saveAuthToken(token)
                         Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@LoginActivity, com.example.dailyreminder.ui.main.MainActivity::class.java))
                         finish()
