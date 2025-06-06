@@ -1,6 +1,6 @@
 package com.example.dailyreminder.data.api
 
-import com.example.dailyreminder.data.model.ReminderDto
+import ReminderDto
 import retrofit2.Response
 import retrofit2.http.*
 

@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
                     if (token != null) {
                         sessionManager.saveAuthToken(token)
                         Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@LoginActivity, com.example.dailyreminder.ui.main.MainActivity::class.java))
+                        startActivity(Intent(this@LoginActivity, com.example.dailyreminder.ui.main.MainActivity))
                         finish()
                     } else {
                         Toast.makeText(this@LoginActivity, "Token tidak ditemukan", Toast.LENGTH_SHORT).show()

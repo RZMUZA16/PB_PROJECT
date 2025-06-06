@@ -53,4 +53,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("androidx.activity:activity-ktx:$activity_version")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.jakewharton.threetenabp:threetenabp:1.4.4")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
 }

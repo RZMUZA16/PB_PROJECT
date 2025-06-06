@@ -1,7 +1,8 @@
 package com.example.dailyreminder.data.repository
 
+import ReminderDto
 import com.example.dailyreminder.data.api.ReminderApiService
-import com.example.dailyreminder.data.model.ReminderDto
+
 import retrofit2.Response
 
 class ReminderRepository(private val api: ReminderApiService) {

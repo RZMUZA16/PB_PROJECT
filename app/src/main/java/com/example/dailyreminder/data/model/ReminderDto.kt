@@ -8,3 +8,8 @@ data class ReminderDto(
     val time: String,
     val completed: Boolean
 ) : Serializable
+data class Reminder(
+    val id: Int,
+    val title: String,
+    val date: String
+)

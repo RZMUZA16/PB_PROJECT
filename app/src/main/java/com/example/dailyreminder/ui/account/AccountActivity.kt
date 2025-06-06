@@ -33,26 +33,21 @@ class AccountActivity : AppCompatActivity() {
         btnEditProfile = findViewById(R.id.btnEditProfile)
         btnChangePassword = findViewById(R.id.btnChangePassword)
 
-        // Ambil data dari session
         tvName.text = sessionManager.getUserName()
         tvEmail.text = sessionManager.getUserEmail()
 
-        // Aksi tombol back
         btnBack.setOnClickListener {
             finish()
         }
 
-        // Aksi edit profile
         btnEditProfile.setOnClickListener {
             Toast.makeText(this, "Edit Profile belum diimplementasi", Toast.LENGTH_SHORT).show()
         }
 
-        // Aksi ganti password
         btnChangePassword.setOnClickListener {
             Toast.makeText(this, "Change Password belum diimplementasi", Toast.LENGTH_SHORT).show()
         }
 
-        // Aksi logout
         btnLogout.setOnClickListener {
             sessionManager.clearSession()
             val intent = Intent(this, LoginActivity::class.java)
