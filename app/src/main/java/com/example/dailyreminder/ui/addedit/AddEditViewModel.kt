@@ -1,101 +1,57 @@
-package com.example.dailyreminder.ui.reminder
+package com.example.dailyreminder.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ReminderDto
+import com.example.dailyreminder.data.model.toDto
 import com.example.dailyreminder.data.repository.ReminderRepository
+import com.example.dailyreminder.model.Reminder
 import kotlinx.coroutines.launch
 
-class AddEditViewModel(private val repository: ReminderRepository) : ViewModel() {
+class AddEditViewModel(
+    private val repository: ReminderRepository
+) : ViewModel() {
 
-    // LiveData untuk state input dan status
-    private val _reminderTitle = MutableLiveData<String>()
-    val reminderTitle: LiveData<String> get() = _reminderTitle
+    private val _saveResult = MutableLiveData<Boolean>()
+    val saveResult: LiveData<Boolean> get() = _saveResult
 
-    private val _reminderDescription = MutableLiveData<String>()
-    val reminderDescription: LiveData<String> get() = _reminderDescription
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> get() = _errorMessage
 
-    private val _selectedDate = MutableLiveData<String>()
-    val selectedDate: LiveData<String> get() = _selectedDate
-
-    private val _selectedTime = MutableLiveData<String>()
-    val selectedTime: LiveData<String> get() = _selectedTime
-
-    private val _isCompleted = MutableLiveData<Boolean>(false)
-    val isCompleted: LiveData<Boolean> get() = _isCompleted
-
-    private val _saveStatus = MutableLiveData<Boolean?>()
-    val saveStatus: LiveData<Boolean?> get() = _saveStatus
-
-    private var reminderId: Int? = null
-    private var isEditMode = false
-
-    fun initData(reminder: ReminderDto?) {
-        if (reminder != null) {
-            isEditMode = true
-            reminderId = reminder.id
-            _reminderTitle.value = reminder.title
-            _reminderDescription.value = reminder.description
-            _selectedDate.value = reminder.date
-            _selectedTime.value = reminder.time
-            _isCompleted.value = reminder.completed
-        }
-    }
-
-    fun setTitle(title: String) {
-        _reminderTitle.value = title
-    }
-
-    fun setDescription(description: String) {
-        _reminderDescription.value = description
-    }
-
-    fun setDate(date: String) {
-        _selectedDate.value = date
-    }
-
-    fun setTime(time: String) {
-        _selectedTime.value = time
-    }
-
-    fun setCompleted(completed: Boolean) {
-        _isCompleted.value = completed
-    }
-
-    fun saveReminder() {
-        val title = _reminderTitle.value?.trim() ?: ""
-        val description = _reminderDescription.value?.trim() ?: ""
-        val date = _selectedDate.value ?: ""
-        val time = _selectedTime.value ?: ""
-        val completed = _isCompleted.value ?: false
-
-        if (title.isEmpty() || date.isEmpty() || time.isEmpty()) {
-            _saveStatus.value = false
+    fun saveReminder(
+        token: String,
+        title: String,
+        description: String,
+        date: String,
+        time: String,
+        isCompleted: Boolean
+    ) {
+        if (title.isBlank()) {
+            _errorMessage.value = "Title is required"
             return
         }
 
-        val reminder = ReminderDto(
-            id = reminderId,
+        val reminder = Reminder(
             title = title,
             description = description,
             date = date,
             time = time,
-            completed = completed
+            isCompleted = isCompleted
         )
 
         viewModelScope.launch {
             try {
-                val response = if (isEditMode) {
-                    repository.updateReminder(reminderId!!, reminder)
-                } else {
-                    repository.createReminder(reminder)
-                }
-                _saveStatus.postValue(response.isSuccessful)
+                repository.createReminder(token, reminder.toDto())
+                _saveResult.value = true
             } catch (e: Exception) {
-                _saveStatus.postValue(false)
+                _errorMessage.value = e.message ?: "Unknown error"
+                _saveResult.value = false
             }
         }
+    }
+
+    fun clearError() {
+        _errorMessage.value = null
     }
 }

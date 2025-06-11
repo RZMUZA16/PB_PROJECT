@@ -1,4 +1,4 @@
-package com.example.dailyreminder.ui.reminder
+package com.example.dailyreminder.presentation
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -6,131 +6,87 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dailyreminder.R
-import com.example.dailyreminder.data.model.ReminderDto
-import com.example.dailyreminder.data.repository.ReminderRepository
-import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 
-class AddEditActivity : AppCompatActivity() {
+class AddEditReminderActivity : AppCompatActivity() {
 
-    private lateinit var etTitle: TextInputEditText
-    private lateinit var etDescription: TextInputEditText
-    private lateinit var btnDate: Button
-    private lateinit var btnTime: Button
+    private lateinit var etReminderTitle: EditText
+    private lateinit var etReminderDescription: EditText
+    private lateinit var btnSelectDate: Button
+    private lateinit var btnSelectTime: Button
     private lateinit var tvSelectedDate: TextView
     private lateinit var tvSelectedTime: TextView
     private lateinit var switchCompleted: Switch
-    private lateinit var btnSave: Button
     private lateinit var btnCancel: Button
+    private lateinit var btnSaveReminder: Button
 
-    private var selectedDate: String = ""
-    private var selectedTime: String = ""
-    private var isEditMode = false
-    private var reminderId: Int? = null
-
-    private val repository = ReminderRepository()
+    private val calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_edit)
 
-        // Inisialisasi View
-        etTitle = findViewById(R.id.etReminderTitle)
-        etDescription = findViewById(R.id.etReminderDescription)
-        btnDate = findViewById(R.id.btnSelectDate)
-        btnTime = findViewById(R.id.btnSelectTime)
+        // Bind Views
+        etReminderTitle = findViewById(R.id.etReminderTitle)
+        etReminderDescription = findViewById(R.id.etReminderDescription)
+        btnSelectDate = findViewById(R.id.btnSelectDate)
+        btnSelectTime = findViewById(R.id.btnSelectTime)
         tvSelectedDate = findViewById(R.id.tvSelectedDate)
         tvSelectedTime = findViewById(R.id.tvSelectedTime)
         switchCompleted = findViewById(R.id.switchCompleted)
-        btnSave = findViewById(R.id.btnSaveReminder)
         btnCancel = findViewById(R.id.btnCancel)
+        btnSaveReminder = findViewById(R.id.btnSaveReminder)
 
-        // Cek jika mode edit
-        val reminder = intent.getSerializableExtra("reminder") as? ReminderDto
-        if (reminder != null) {
-            isEditMode = true
-            reminderId = reminder.id
-            etTitle.setText(reminder.title)
-            etDescription.setText(reminder.description)
-            selectedDate = reminder.date
-            selectedTime = reminder.time
-            tvSelectedDate.text = selectedDate
-            tvSelectedTime.text = selectedTime
-            switchCompleted.isChecked = reminder.completed
+        setupListeners()
+    }
+
+    private fun setupListeners() {
+        btnSelectDate.setOnClickListener {
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            DatePickerDialog(this, { _, y, m, d ->
+                calendar.set(Calendar.YEAR, y)
+                calendar.set(Calendar.MONTH, m)
+                calendar.set(Calendar.DAY_OF_MONTH, d)
+                val dateFormat = SimpleDateFormat("EEE, d MMM yyyy", Locale.getDefault())
+                tvSelectedDate.text = dateFormat.format(calendar.time)
+            }, year, month, day).show()
         }
 
-        btnDate.setOnClickListener { showDatePicker() }
-        btnTime.setOnClickListener { showTimePicker() }
-        btnSave.setOnClickListener { saveReminder() }
-        btnCancel.setOnClickListener { finish() }
-    }
+        btnSelectTime.setOnClickListener {
+            val hour = calendar.get(Calendar.HOUR_OF_DAY)
+            val minute = calendar.get(Calendar.MINUTE)
 
-    private fun showDatePicker() {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        DatePickerDialog(this, { _, y, m, d ->
-            selectedDate = String.format("%04d-%02d-%02d", y, m + 1, d)
-            tvSelectedDate.text = selectedDate
-        }, year, month, day).show()
-    }
-
-    private fun showTimePicker() {
-        val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-
-        TimePickerDialog(this, { _, h, m ->
-            selectedTime = String.format("%02d:%02d", h, m)
-            tvSelectedTime.text = selectedTime
-        }, hour, minute, true).show()
-    }
-
-    private fun saveReminder() {
-        val title = etTitle.text.toString().trim()
-        val description = etDescription.text.toString().trim()
-        val isCompleted = switchCompleted.isChecked
-
-        if (title.isEmpty() || selectedDate.isEmpty() || selectedTime.isEmpty()) {
-            Toast.makeText(this, "Harap lengkapi semua data", Toast.LENGTH_SHORT).show()
-            return
+            TimePickerDialog(this, { _, h, m ->
+                calendar.set(Calendar.HOUR_OF_DAY, h)
+                calendar.set(Calendar.MINUTE, m)
+                val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+                tvSelectedTime.text = timeFormat.format(calendar.time)
+            }, hour, minute, false).show()
         }
 
-        val reminder = ReminderDto(
-            id = reminderId,
-            title = title,
-            description = description,
-            date = selectedDate,
-            time = selectedTime,
-            completed = isCompleted
-        )
+        btnCancel.setOnClickListener {
+            finish()
+        }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val response = if (isEditMode) {
-                    repository.updateReminder(reminderId!!, reminder)
-                } else {
-                    repository.createReminder(reminder)
-                }
+        btnSaveReminder.setOnClickListener {
+            val title = etReminderTitle.text.toString().trim()
+            val description = etReminderDescription.text.toString().trim()
+            val date = tvSelectedDate.text.toString()
+            val time = tvSelectedTime.text.toString()
+            val isCompleted = switchCompleted.isChecked
 
-                runOnUiThread {
-                    if (response.isSuccessful) {
-                        Toast.makeText(this@AddEditActivity, "Berhasil disimpan", Toast.LENGTH_SHORT).show()
-                        finish()
-                    } else {
-                        Toast.makeText(this@AddEditActivity, "Gagal menyimpan", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } catch (e: Exception) {
-                runOnUiThread {
-                    Toast.makeText(this@AddEditActivity, "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
-                }
+            if (title.isEmpty()) {
+                etReminderTitle.error = "Title is required"
+                return@setOnClickListener
             }
+
+            // TODO: Integrasi dengan ViewModel atau API
+            Toast.makeText(this, "Reminder saved", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 }

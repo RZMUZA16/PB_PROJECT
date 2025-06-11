@@ -1,17 +1,12 @@
 package com.example.dailyreminder.model
 
-import com.google.gson.annotations.SerializedName
-
 data class Reminder(
-    val id: Int,
+    val id: Int? = null,
     val title: String,
+    val description: String,
     val date: String,
-    val description: String?,
-    @SerializedName("reminder_time")
-    val reminderTime: String,
-    @SerializedName("created_at")
-    val createdAt: String,
-    @SerializedName("updated_at")
-    val updatedAt: String
+    val time: String,
+    val isCompleted: Boolean,
+    val createdAt: String? = null,
+    val updatedAt: String? = null
 )
-
