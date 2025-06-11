@@ -1,4 +1,4 @@
-package com.example.dailyreminder
+package com.example.dailyreminder.ui.main
 
 import android.app.Application
 import com.example.dailyreminder.data.api.AuthApiService
