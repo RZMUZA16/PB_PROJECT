@@ -3,7 +3,7 @@ package com.example.dailyreminder.ui.main
 import androidx.lifecycle.*
 import com.example.dailyreminder.data.repository.ReminderRepository
 import com.example.dailyreminder.model.Reminder
-import com.example.dailyreminder.data.model.toDomain  // Pastikan ini di-import
+import com.example.dailyreminder.data.model.toDomain
 import kotlinx.coroutines.launch
 
 class MainViewModel(
