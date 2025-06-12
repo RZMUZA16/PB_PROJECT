@@ -2,7 +2,6 @@ package com.example.dailyreminder.data.model
 
 import com.example.dailyreminder.model.Reminder
 
-// Konversi dari DTO ke Domain
 fun ReminderDto.toDomain(): Reminder {
     return Reminder(
         id = id,
