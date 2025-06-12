@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/jade"
+    tools:context=".ui.addTask.AddTasksActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/jade"
+            app:title="Add Task"
+            app:titleTextColor="@color/white"
+            app:navigationIcon="@drawable/back_button"
+            app:tint="@color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Form Container -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:background="@drawable/rounded_button"
+                android:elevation="4dp">
+
+                <!-- Judul -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etJudul"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Judul Tugas"
+                        android:inputType="textCapSentences" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Keterangan -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etKeterangan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Keterangan (Optional)"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:gravity="top" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Date Picker -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal Tugas"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="16dp" />
+
+                <Button
+                    android:id="@+id/btnSelectDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Select Date"
+                    android:textSize="16sp"
+                    android:paddingVertical="12dp"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/etTanggal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No date selected"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="4dp" />
+
+                <!-- Action Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="24dp"
+                    android:gravity="end">
+
+                    <Button
+                        android:id="@+id/btnCancel"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cancel"
+                        android:textColor="@color/fire_red"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="12dp" />
+
+                    <Button
+                        android:id="@+id/btnSubmit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save Task"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/rounded_button"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="12dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

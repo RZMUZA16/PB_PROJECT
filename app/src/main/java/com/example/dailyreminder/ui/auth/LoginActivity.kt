@@ -3,7 +3,10 @@ package com.example.dailyreminder.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.dailyreminder.R
@@ -30,6 +33,13 @@ class LoginActivity : AppCompatActivity() {
         tvCreateAccount = findViewById(R.id.tvCreateAccount)
         sessionManager = SessionManager(this)
 
+        sessionManager.getAuthToken()?.let { token ->
+            if (token.isNotBlank()) {
+                startMainAndFinish()
+                return  // Skip the rest of onCreate
+            }
+        }
+
         btnLogin.setOnClickListener {
             performLogin()
         }
@@ -37,6 +47,16 @@ class LoginActivity : AppCompatActivity() {
         tvCreateAccount.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+    }
+
+    private fun startMainAndFinish() {
+        startActivity(
+            Intent(this, MainActivity::class.java)
+                .apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+        )
+        finish()
     }
 
     private fun performLogin() {
@@ -53,9 +73,12 @@ class LoginActivity : AppCompatActivity() {
                 val repository = AuthRepository()
                 val response = repository.login(email, password)
 
-                if (response.isSuccessful && response.body()?.token != null) {
-                    val token = response.body()?.token!!
+                if (response.isSuccessful && response.body()?.accessToken != null) {
+                    val token = response.body()?.accessToken!!
                     sessionManager.saveAuthToken(token)
+                    sessionManager.saveUserId(id = response.body()?.user?.id ?: 0)
+                    sessionManager.saveUserInfo(name = response.body()?.user?.name ?: "GUEST", email = response.body()?.user?.email
+                        ?: "GUEST@EXAMPLE.COM")
                     Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
 
                     // Navigasi ke MainActivity, dan clear history agar tidak bisa kembali ke Login

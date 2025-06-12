@@ -1,3 +1,5 @@
+package com.example.dailyreminder.com.example.dailyreminder.ui.reminder
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

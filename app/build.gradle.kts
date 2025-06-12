@@ -34,11 +34,12 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
-    val activity_version = "1.10.1"
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -47,13 +48,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.0")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("androidx.activity:activity-ktx:$activity_version")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.jakewharton.threetenabp:threetenabp:1.4.4")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.threetenabp)
+    implementation(libs.logging.interceptor)
 
 }

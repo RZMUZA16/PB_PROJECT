@@ -1,4 +1,4 @@
-package com.example.dailyreminder.ui.reminder
+package com.example.dailyreminder.com.example.dailyreminder.ui.main
 
 import android.view.LayoutInflater
 import android.view.View

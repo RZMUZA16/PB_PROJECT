@@ -2,7 +2,10 @@ package com.example.dailyreminder.ui.account
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dailyreminder.R
 import com.example.dailyreminder.ui.auth.LoginActivity
@@ -24,6 +27,15 @@ class AccountActivity : AppCompatActivity() {
         setContentView(R.layout.activity_account)
 
         sessionManager = SessionManager(this)
+
+        if (sessionManager.getAuthToken().isNullOrBlank()) {
+            startActivity(
+                Intent(this, LoginActivity::class.java)
+                    .apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK }
+            )
+            finish()
+            return
+        }
 
         // View binding
         tvName = findViewById(R.id.NameAccount)

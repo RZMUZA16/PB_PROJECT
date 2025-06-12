@@ -1,69 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/jade"
-   >
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="395dp"
-        android:layout_height="54dp"
-
-        android:background="@drawable/rounded_button">
+    android:background="@color/jade">
+    <!-- Header with account icon -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button"
+        android:padding="12dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
 
         <ImageView
             android:id="@+id/imgAccount"
-            android:layout_width="52dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:src="@drawable/ic_account" />
-    </RelativeLayout>
-    <RelativeLayout
+
+        <!-- You can add a TextView for username here if desired -->
+    </LinearLayout>
+
+    <!-- Section title -->
+    <TextView
+        android:id="@+id/tvKegiatan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeLayout"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_button"
-        android:padding="12dp">
+        android:text="Kegiatan Hari Ini"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:layout_marginTop="16dp" />
 
-        <CalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <!-- RecyclerView for tasks -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTasks"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <TextView
-            android:id="@+id/tvKegiatan"
-            android:layout_width="355dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/calendarView"
-            android:layout_marginTop="16dp"
-            android:text="Kegiatan Hari Ini"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:gravity="center"/>
-        <ListView
-            android:id="@+id/lvKegiatan"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_below="@id/tvKegiatan"
-            android:layout_marginTop="8dp"
-            android:dividerHeight="1dp"
-            />
-        <ImageButton
-            android:id="@+id/btnAddNote"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="Add Note"
-            android:src="@drawable/ic_add" />
-    </RelativeLayout>
-</RelativeLayout>
+    <!-- Floating add button -->
+    <ImageButton
+        android:id="@+id/btnAddNote"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/ic_add"
+        android:background="@android:color/white"
+        android:contentDescription=""
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

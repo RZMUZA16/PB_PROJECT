@@ -1,64 +1,94 @@
 package com.example.dailyreminder.ui.main
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.*
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.example.dailyreminder.R
-import java.text.SimpleDateFormat
-import java.util.*
+import androidx.lifecycle.lifecycleScope
+import com.example.dailyreminder.com.example.dailyreminder.adapter.TasksAdapter
+import com.example.dailyreminder.data.api.RetrofitInstance
+import com.example.dailyreminder.databinding.ActivityMainBinding
+import com.example.dailyreminder.ui.account.AccountActivity
+import com.example.dailyreminder.ui.addTask.AddTasksActivity
+import com.example.dailyreminder.utils.SessionManager
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var calendarView: CalendarView
-    private lateinit var tvKegiatan: TextView
-    private lateinit var lvKegiatan: ListView
-    private lateinit var btnAddNote: ImageButton
-    private lateinit var imgAccount: ImageView
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var sessionManager: SessionManager
+    private lateinit var adapter: TasksAdapter
+    private val addTaskLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            // User just added a task → reload the list
+            loadTasks()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Inisialisasi view
-        calendarView = findViewById(R.id.calendarView)
-        tvKegiatan = findViewById(R.id.tvKegiatan)
-        lvKegiatan = findViewById(R.id.lvKegiatan)
-        btnAddNote = findViewById(R.id.btnAddNote)
-        imgAccount = findViewById(R.id.imgAccount)
+        sessionManager = SessionManager(this)
 
-        // Set kegiatan default
-        setKegiatanHariIni(getCurrentDate())
+        // Setup RecyclerView
+        adapter = TasksAdapter()
+        binding.rvTasks.adapter = adapter
 
-        // Ubah kegiatan berdasarkan tanggal dipilih
-        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            val selectedDate = "$dayOfMonth/${month + 1}/$year"
-            setKegiatanHariIni(selectedDate)
-        }
+        // Load tasks
+        loadTasks()
 
         // Tambah Note (nanti bisa diarahkan ke AddNoteActivity)
-        btnAddNote.setOnClickListener {
-            Toast.makeText(this, "Tambah catatan diklik", Toast.LENGTH_SHORT).show()
-            // startActivity(Intent(this, AddNoteActivity::class.java))
+        binding.btnAddNote.setOnClickListener {
+            val intent = Intent(this, AddTasksActivity::class.java)
+            addTaskLauncher.launch(intent)
         }
 
-        // Klik gambar akun
-        imgAccount.setOnClickListener {
-            Toast.makeText(this, "Akun diklik", Toast.LENGTH_SHORT).show()
-            // startActivity(Intent(this, ProfileActivity::class.java))
+        binding.imgAccount.setOnClickListener {
+            startActivity(Intent(this@MainActivity, AccountActivity::class.java))
+        }
+
+    }
+
+    private fun loadTasks() {
+        val api = RetrofitInstance.provideTaskService(sessionManager)
+        Log.d(TAG, "Starting loadTasks()")  // entry point
+
+        lifecycleScope.launch {
+            try {
+                Log.d(TAG, "Calling GET /api/tasks")
+                val resp = api.getTasks()
+
+                if (resp.isSuccessful) {
+                    val tasksList = resp.body() ?: emptyList()
+                    Log.i(TAG, "Loaded ${tasksList.size} tasks successfully")
+                    adapter.submitList(tasksList)
+                } else {
+                    Log.w(TAG, "GET /api/tasks failed with HTTP ${resp.code()} – ${resp.errorBody()?.string()}")
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Gagal memuat tugas: ${resp.code()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Network or parsing error in loadTasks()", e)
+                Toast.makeText(
+                    this@MainActivity,
+                    "Kesalahan jaringan: ${e.localizedMessage}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 
-    private fun getCurrentDate(): String {
-        val sdf = SimpleDateFormat("d/M/yyyy", Locale.getDefault())
-        return sdf.format(Date())
+    companion object {
+        private const val TAG = "MainActivity"
     }
 
-    private fun setKegiatanHariIni(tanggal: String) {
-        tvKegiatan.text = "Kegiatan pada $tanggal"
-
-        // Dummy data untuk simulasi
-        val kegiatan = listOf("Bangun pagi", "Sholat Subuh", "Sarapan", "Belajar Android", "Istirahat")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, kegiatan)
-        lvKegiatan.adapter = adapter
-    }
 }

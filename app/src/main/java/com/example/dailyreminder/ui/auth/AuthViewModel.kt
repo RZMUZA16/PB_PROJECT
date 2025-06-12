@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.dailyreminder.data.model.UserDto
 import com.example.dailyreminder.data.repository.AuthRepository
 import kotlinx.coroutines.launch
-import retrofit2.Response
-import java.sql.ResultSet
 
 class AuthViewModel : ViewModel() {
     private val authRepository = AuthRepository()
@@ -24,7 +22,7 @@ class AuthViewModel : ViewModel() {
             try {
                 val response = authRepository.login(email, password)
                 if (response.isSuccessful) {
-                    val token = response.body()?.token
+                    val token = response.body()?.accessToken
                     if (!token.isNullOrEmpty()) {
                         _loginResult.postValue(Result.success(token))
                     } else {

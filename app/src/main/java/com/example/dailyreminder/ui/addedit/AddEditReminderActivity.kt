@@ -1,13 +1,19 @@
-package com.example.dailyreminder.presentation
+package com.example.dailyreminder.ui.addedit
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Switch
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dailyreminder.R
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
 class AddEditReminderActivity : AppCompatActivity() {
 
@@ -17,6 +23,7 @@ class AddEditReminderActivity : AppCompatActivity() {
     private lateinit var btnSelectTime: Button
     private lateinit var tvSelectedDate: TextView
     private lateinit var tvSelectedTime: TextView
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private lateinit var switchCompleted: Switch
     private lateinit var btnCancel: Button
     private lateinit var btnSaveReminder: Button
