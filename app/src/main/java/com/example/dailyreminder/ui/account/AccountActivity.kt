@@ -49,7 +49,7 @@ class AccountActivity : AppCompatActivity() {
         tvEmail.text = sessionManager.getUserEmail()
 
         btnBack.setOnClickListener {
-            finish()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         btnEditProfile.setOnClickListener {

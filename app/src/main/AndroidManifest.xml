@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".ui.main.DailyReminderApp"
         android:allowBackup="true"
         android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -26,10 +25,6 @@
         <activity
             android:name=".ui.auth.RegisterActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.addedit.AddEditReminderActivity"
-            android:exported="false" />
-
         <activity android:name=".ui.account.AccountActivity"
             android:exported="false" />
         <activity
