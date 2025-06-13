@@ -1,95 +1,93 @@
 package com.example.dailyreminder.ui.auth
 
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.dailyreminder.R
-import com.example.dailyreminder.data.repository.AuthRepository
 import com.example.dailyreminder.data.model.UserDto
+import com.example.dailyreminder.data.repository.AuthRepository
+import com.example.dailyreminder.databinding.ActivityRegisterBinding
+import com.example.dailyreminder.ui.main.MainActivity
+import com.example.dailyreminder.utils.SessionManager
 import kotlinx.coroutines.launch
-import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var etName: EditText
-    private lateinit var etEmail: EditText
-    private lateinit var etPassword: EditText
-    private lateinit var etNumber: EditText
-    private lateinit var btnDatePicker: Button
-    private lateinit var btnRegister: Button
-    private lateinit var tvCreateAccount: TextView
-
-    private var selectedDate: String = ""
+    private lateinit var binding: ActivityRegisterBinding
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        etName = findViewById(R.id.etName)
-        etEmail = findViewById(R.id.etEmail)
-        etPassword = findViewById(R.id.etPassword)
-        etNumber = findViewById(R.id.etNumber)
-        btnDatePicker = findViewById(R.id.btnDatePicker)
-        btnRegister = findViewById(R.id.btnRegister)
-        tvCreateAccount = findViewById(R.id.tvCreateAccount)
+        sessionManager = SessionManager(this)
 
-        btnDatePicker.setOnClickListener { showDatePicker() }
-        btnRegister.setOnClickListener { performRegister() }
-        tvCreateAccount.setOnClickListener {
+        binding.btnRegister.setOnClickListener { performRegister() }
+        binding.tvLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }
 
-    private fun showDatePicker() {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        val datePickerDialog = DatePickerDialog(this,
-            { _, y, m, d ->
-                selectedDate = "$y-${m + 1}-$d"
-                btnDatePicker.text = selectedDate
-            }, year, month, day
-        )
-        datePickerDialog.show()
-    }
-
     private fun performRegister() {
-        val name = etName.text.toString().trim()
-        val email = etEmail.text.toString().trim()
-        val password = etPassword.text.toString()
-        val phone = etNumber.text.toString().trim()
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty() || selectedDate.isEmpty()) {
+        val name             = binding.etName.text.toString().trim()
+        val email            = binding.etEmail.text.toString().trim()
+        val password         = binding.etPassword.text.toString()
+        val passwordConfirm  = binding.etPasswordConfirm.text.toString()
+
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordConfirm.isEmpty()) {
             Toast.makeText(this, "Semua field wajib diisi", Toast.LENGTH_SHORT).show()
             return
         }
 
         val userDto = UserDto(
-            name = name,
-            email = email,
-            password = password,
-            phone = phone,
-            birthDate = selectedDate
+            name             = name,
+            email            = email,
+            password         = password,
+            passwordConfirm  = passwordConfirm
         )
 
         lifecycleScope.launch {
             try {
-                val repository = AuthRepository()
-                val response = repository.register(userDto)
-                if (response.isSuccessful) {
-                    Toast.makeText(this@RegisterActivity, "Register berhasil", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                val response = AuthRepository().register(userDto)
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
+
+                    sessionManager.saveAuthToken(body.accessToken)
+                    sessionManager.saveUserInfo(body.user.name, body.user.email)
+                    sessionManager.saveUserId(body.user.id)
+
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        body.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    startActivity(
+                        Intent(this@RegisterActivity, MainActivity::class.java)
+                            .apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            }
+                    )
                     finish()
+
                 } else {
-                    Toast.makeText(this@RegisterActivity, "Register gagal: ${response.message()}", Toast.LENGTH_LONG).show()
+                    val errorBody = response.errorBody()?.string().orEmpty()
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Register gagal: $errorBody",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@RegisterActivity, "Error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@RegisterActivity,
+                    "Error: ${e.localizedMessage}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
